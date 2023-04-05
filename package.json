@@ -14,6 +14,7 @@
     "web-vitals": "^2.1.4"
   },
   "scripts": {
+    "env": "npm run build && (cd server && npm run server)",
     "start": "react-scripts start",
     "build": "react-scripts build",
     "test": "react-scripts test",
