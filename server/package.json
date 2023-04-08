@@ -4,7 +4,7 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "server": "./Server",
+    "server": "g++ -o Server server.cpp && ./Server",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "author": "",
