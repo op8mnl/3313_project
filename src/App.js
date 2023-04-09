@@ -1,11 +1,10 @@
 import React, { useEffect, useState } from "react";
 import {io} from "socket.io-client";
 
-// need to implement corvus restbed to serve build file and implement rest 
-
-const socket = io("http://localhost:3001");
+const socket = io("http://localhost:8080",{transports: ['websocket']});
 
 function App() {
+
   const [messages, setMessages] = useState([]);
 
   useEffect(() => {
