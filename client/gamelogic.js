@@ -20,38 +20,69 @@ async function getQuote() {
         const charInQuote = document.createElement("span");
         charInQuote.innerText = character;
         generatedQuote.appendChild(charInQuote);
-    })
+    });
+    userString.value = null;
 }
+
 //call the quote to be displayed, may want to add a timer to wait a little bit
 getQuote();
 
 
 //function(s) to show the user that they have the correct string
 function displayCorrectness() {
-    const correctQuoteArray = generatedQuote;//this will be the quote
-    const userInputArray = userString; //this is what the user types int
+    const correctQuoteArray = generatedQuote.querySelectorAll("span");//this will be the quote
+    const userInputArray = userString.value.split(""); //this is what the user types int
+    let quoteCorrect = true; //confirms whether the statement is correct or not
 
-    correctQuoteArray.forEach((currentChar, i) => {
+    correctQuoteArray.forEach((currentChars, i) => {
         if(userInputArray[i] == null) {
-            currentChar.classList.remove("correct");
-            currentChar.classList.remove("incorrect");
+            currentChars.classList.remove("correct");
+            currentChars.classList.remove("incorrect");
+            quoteCorrect = false;
         }
-        else if(userInputArray[i] === currentChar.innerText) {
-            currentChar.classList.add("correct");
-            currentChar.classList.remove("incorrect");
+        else if(userInputArray[i] === currentChars.innerText) {
+            currentChars.classList.add("correct");
+            currentChars.classList.remove("incorrect");
         }
         else{
-            currentChar.classList.add("incorrect");
-            currentChar.classList.remove("correct");
+            currentChars.classList.add("incorrect");
+            currentChars.classList.remove("correct");
+            quoteCorrect = false;
         }
     });
+
+    //if the quote is correct load a new one
+    if(quoteCorrect == true) {
+        getQuote();
+    }
+}
+
+//function(s) to create a timer
+function timer() {
+    let displayTime = document.getElementById("currentTime");
+    let sec = 0;
+
+    while(sec <= 60) {
+        setInterval(() => {
+            displayTime = sec;
+            sec++;
+        }, 1000);
+    }
+
+    //clear the quote and the screen
+    generatedQuote.value = null;
+    userString.value = null;
+
+    //call function to get the users score
+    findScore();
 }
 
 //function(s) to calculate the score and store in DB
+function findScore() {
+    //calculate the user score
 
-
-
-
+    //add the score to the database
+}
 
 
 //function(s) to show where the user places
@@ -63,6 +94,7 @@ function displayCorrectness() {
 //HTML of the screen
 return(
     <div className="RaceTyper">
+        <h1 id="currentTime"></h1>
         <div id="quoteDisplay"></div>
         <textarea id="userInput" onInput={ () => {
             displayCorrectness();
