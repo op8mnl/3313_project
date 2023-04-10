@@ -6,6 +6,12 @@ const generatedQuote = document.getElementById("quoteDisplay");
 //variable for the user input
 const userString = document.getElementById("userInput");
 
+//variables for determining the user has finished the quote
+let generatedQuoteLength = generatedQuote.split("").length;
+let userStringLength;
+
+//variables for score
+let correctChar = 0;
 
 //function(s) to get the game quote
 function getRandomQuote() {
@@ -23,7 +29,6 @@ async function getQuote() {
     });
     userString.value = null;
 }
-
 //call the quote to be displayed, may want to add a timer to wait a little bit
 getQuote();
 
@@ -32,29 +37,24 @@ getQuote();
 function displayCorrectness() {
     const correctQuoteArray = generatedQuote.querySelectorAll("span");//this will be the quote
     const userInputArray = userString.value.split(""); //this is what the user types int
-    let quoteCorrect = true; //confirms whether the statement is correct or not
+    userStringLength = userInputArray.length;
 
     correctQuoteArray.forEach((currentChars, i) => {
         if(userInputArray[i] == null) {
             currentChars.classList.remove("correct");
             currentChars.classList.remove("incorrect");
-            quoteCorrect = false;
         }
         else if(userInputArray[i] === currentChars.innerText) {
             currentChars.classList.add("correct");
             currentChars.classList.remove("incorrect");
+            correctChar++;
         }
         else{
             currentChars.classList.add("incorrect");
             currentChars.classList.remove("correct");
-            quoteCorrect = false;
+            correctChar--;
         }
     });
-
-    //if the quote is correct load a new one
-    if(quoteCorrect == true) {
-        getQuote();
-    }
 }
 
 //function(s) to create a timer
@@ -62,7 +62,7 @@ function timer() {
     let displayTime = document.getElementById("currentTime");
     let sec = 0;
 
-    while(sec <= 60) {
+    while(generatedQuoteLength != userStringLength) {
         setInterval(() => {
             displayTime = sec;
             sec++;
@@ -76,6 +76,8 @@ function timer() {
     //call function to get the users score
     findScore();
 }
+//call the timer to start it 
+timer();
 
 //function(s) to calculate the score and store in DB
 function findScore() {
@@ -95,7 +97,10 @@ function findScore() {
 return(
     <div className="RaceTyper">
         <h1 id="currentTime"></h1>
+        <h1 id="score">Score: {correctChar}</h1>
+        <br></br>
         <div id="quoteDisplay"></div>
+        <br></br>
         <textarea id="userInput" onInput={ () => {
             displayCorrectness();
         }}></textarea>
