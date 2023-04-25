@@ -50,7 +50,10 @@ int main()
 	cin.getline(name,MAX_LEN);
 	send(client_socket,name,sizeof(name),0);
 
-	cout<<"\n\t  ====== Welcome to the chat-room ======   "<<endl<<text_colour;
+	char roomName[MAX_LEN];
+	recv(client_socket,roomName,sizeof(roomName),0);
+
+	cout<<"\n\t  ====== Welcome to "<< roomName <<" ======   "<<endl<<text_colour;
 
 	thread t1(send_message, client_socket);
 	thread t2(recv_message, client_socket);

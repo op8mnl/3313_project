@@ -32,6 +32,7 @@ int broadcast_message(string message, int sender_id);
 int broadcast_message(int num, int sender_id);
 void end_connection(int id);
 void handle_client(int client_socket, int id);
+char roomName[MAX_LEN];
 
 int main()
 {
@@ -64,7 +65,9 @@ int main()
 	int client_socket;
 	unsigned int len=sizeof(sockaddr_in);
 
-	cout<<"\n\t  ====== Welcome to the chat-room ======   "<<endl<<text_colour;
+	cout<<"Enter Chat-room name: "<<endl;
+	cin.getline(roomName, MAX_LEN);
+	cout<<"\n\t  ====== Welcome to "<< roomName <<" ======   "<<endl<<text_colour;
 
 	while(1)
 	{
@@ -161,6 +164,7 @@ void handle_client(int client_socket, int id)
 
 	// Display welcome message
 	string welcome_message=string(name)+string(" has joined");
+	send(client_socket,roomName,sizeof(roomName),0);
 	broadcast_message("#NULL",id);	
 	broadcast_message(id,id);								
 	broadcast_message(welcome_message,id);	
