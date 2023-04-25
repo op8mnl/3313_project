@@ -17,10 +17,9 @@ using namespace std;
 bool exit_flag=false;
 thread t_send, t_recv;
 int client_socket;
-string def_col="\033[037m";
+string text_colour="\033[037m";
 
 void catch_ctrl_c(int signal);
-string color(int code);
 int eraseText(int cnt);
 void send_message(int client_socket);
 void recv_message(int client_socket);
@@ -51,7 +50,7 @@ int main()
 	cin.getline(name,MAX_LEN);
 	send(client_socket,name,sizeof(name),0);
 
-	cout<<"\n\t  ====== Welcome to the chat-room ======   "<<endl<<def_col;
+	cout<<"\n\t  ====== Welcome to the chat-room ======   "<<endl<<text_colour;
 
 	thread t1(send_message, client_socket);
 	thread t2(recv_message, client_socket);
@@ -79,11 +78,6 @@ void catch_ctrl_c(int signal)
 	exit(signal);
 }
 
-string color(int code)
-{
-	return def_col;
-}
-
 // Erase text from terminal
 int eraseText(int cnt)
 {
@@ -100,7 +94,7 @@ void send_message(int client_socket)
 {
 	while(1)
 	{
-		cout<<def_col<<"You : "<<def_col;
+		cout<<text_colour<<"You : "<<text_colour;
 		char str[MAX_LEN];
 		cin.getline(str,MAX_LEN);
 		send(client_socket,str,sizeof(str),0);
@@ -122,7 +116,6 @@ void recv_message(int client_socket)
 		if(exit_flag)
 			return;
 		char name[MAX_LEN], str[MAX_LEN];
-		int color_code;
 		int bytes_received=recv(client_socket,name,sizeof(name),0);
 		if(bytes_received<=0)
 			continue;
@@ -130,10 +123,10 @@ void recv_message(int client_socket)
 		recv(client_socket,str,sizeof(str),0);
 		eraseText(6);
 		if(strcmp(name,"#NULL")!=0)
-			cout<<color(color_code)<<name<<" : "<<def_col<<str<<endl;
+			cout<<text_colour<<name<<" : "<<text_colour<<str<<endl;
 		else
-			cout<<color(color_code)<<str<<endl;
-		cout<<def_col<<"You : "<<def_col;
+			cout<<text_colour<<str<<endl;
+		cout<<text_colour<<"You : "<<text_colour;
 		fflush(stdout);
 	}	
 }

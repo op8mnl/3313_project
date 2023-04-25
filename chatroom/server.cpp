@@ -22,11 +22,10 @@ struct terminal
 };
 
 vector<terminal> clients;
-string def_col="\033[37m";
+string text_colour="\033[37m";
 int seed=0;
 mutex cout_mtx,clients_mtx;
 
-string color(int code);
 void set_name(int id, char name[]);
 void shared_print(string str, bool endLine);
 int broadcast_message(string message, int sender_id);
@@ -65,7 +64,7 @@ int main()
 	int client_socket;
 	unsigned int len=sizeof(sockaddr_in);
 
-	cout<<"\n\t  ====== Welcome to the chat-room ======   "<<endl<<def_col;
+	cout<<"\n\t  ====== Welcome to the chat-room ======   "<<endl<<text_colour;
 
 	while(1)
 	{
@@ -88,11 +87,6 @@ int main()
 
 	close(server_socket);
 	return 0;
-}
-
-string color(int code)
-{
-	return def_col;
 }
 
 // Set name of client
@@ -170,7 +164,7 @@ void handle_client(int client_socket, int id)
 	broadcast_message("#NULL",id);	
 	broadcast_message(id,id);								
 	broadcast_message(welcome_message,id);	
-	shared_print(color(id)+welcome_message+def_col);
+	shared_print(text_colour+welcome_message+text_colour);
 	
 	while(1)
 	{
@@ -184,13 +178,13 @@ void handle_client(int client_socket, int id)
 			broadcast_message("#NULL",id);			
 			broadcast_message(id,id);						
 			broadcast_message(message,id);
-			shared_print(color(id)+message+def_col);
+			shared_print(text_colour+message+text_colour);
 			end_connection(id);							
 			return;
 		}
 		broadcast_message(string(name),id);					
 		broadcast_message(id,id);		
 		broadcast_message(string(str),id);
-		shared_print(color(id)+name+" : "+def_col+str);		
+		shared_print(text_colour+name+" : "+text_colour+str);		
 	}	
 }
