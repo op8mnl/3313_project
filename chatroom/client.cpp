@@ -119,10 +119,11 @@ void recv_message(int client_socket)
 		if(exit_flag)
 			return;
 		char name[MAX_LEN], str[MAX_LEN];
+		int colour_code;
 		int bytes_received=recv(client_socket,name,sizeof(name),0);
 		if(bytes_received<=0)
 			continue;
-		recv(client_socket,&color_code,sizeof(color_code),0);
+		recv(client_socket,&colour_code,sizeof(colour_code),0);
 		recv(client_socket,str,sizeof(str),0);
 		eraseText(6);
 		if(strcmp(name,"#NULL")!=0)
